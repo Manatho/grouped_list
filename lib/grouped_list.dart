@@ -7,6 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
+// CUSTOMIZED VERSION OF THE grouped_list library!
 /// A groupable list of widgets similar to [ListView], execpt that the
 /// items can be sectioned into groups.
 ///
@@ -179,10 +180,15 @@ class GroupedListView<T, E> extends StatefulWidget {
   /// the scroll position changes drastically.
   final double itemExtent;
 
+  /// THIS IS THE CUSTOM VARIABLE ADDED
+  /// Offsets the title change!
+  final double titleChangeOffset;
+
   /// Creates a [GroupedListView]
   GroupedListView({
     @required this.elements,
     @required this.groupBy,
+    this.titleChangeOffset = 0,
     this.groupComparator,
     this.groupSeparatorBuilder,
     this.groupHeaderBuilder,
@@ -343,7 +349,7 @@ class _GroupedListViewState<T, E> extends State<GroupedListView<T, E>> {
         RenderBox itemBox = key.currentContext.findRenderObject();
         // position of the item's top border inside the list view
         double y = itemBox.localToGlobal(Offset(0, -listPos - headerHeight)).dy;
-        if (y <= headerHeight && y > max) {
+        if (y <= headerHeight - widget.titleChangeOffset && y > max) {
           topItemKey = entry.key;
           max = y;
         }
